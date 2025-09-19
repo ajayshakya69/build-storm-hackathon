@@ -11,12 +11,16 @@ import { HTTP_RESPONSE_CODES } from 'src/core/constants/http.constants';
 import { SignUpWithPasswordDto } from './auth.dto';
 import { SignInWithPasswordDto } from 'src/services/supabase/subabase.dto'; // you can move this into auth.dto
 import { USER_ROLE } from 'src/core/constants/user.constants';
+import { randomUUID } from 'crypto';
+import { SupabaseService } from 'src/services/supabase/supabase.service';
 
 @Injectable()
 export class AuthService {
+  private supabase: SupabaseService;
   constructor(
     private readonly internalCallService: InternalCallService,
     private readonly jwtService: JwtService,
+    private readonly supabaseService: SupabaseService,
   ) {}
 
   async signUpWithPassword(data: SignUpWithPasswordDto) {
@@ -77,5 +81,29 @@ export class AuthService {
     } catch (err) {
       throw new UnauthorizedException('Invalid or expired token');
     }
+  }
+
+  async uploadFile(file: any) {
+    const { data, error } = await this.supabaseService
+      .getClient()
+      .storage.from('hackathon-build-storm')
+      .upload(
+        `${file.originalname}-${randomUUID()}-${Date.now()}`,
+        file.buffer,
+        {
+          contentType: file.mimetype,
+          upsert: true,
+        },
+      );
+
+    if (error) {
+      throw new BadRequestException(error.message);
+    }
+
+    const publicURL = this.supabaseService
+      .getClient()
+      .storage.from('hackathon-build-storm')
+      .getPublicUrl(data.path);
+    return publicURL;
   }
 }
