@@ -18,6 +18,7 @@ export class UserModel extends Model<
   declare name?: string;
   declare profile_picture?: string;
   declare role: CreationOptional<USER_ROLE>;
+  declare password: string;
   declare readonly createdAt?: Date;
   declare readonly updatedAt?: Date;
 
@@ -49,10 +50,14 @@ export class UserModel extends Model<
         role: {
           type: DataTypes.STRING,
           allowNull: false,
-          defaultValue: USER_ROLE.AUTHENTICATED,
+          defaultValue: USER_ROLE.CUSTOMER,
           validate: {
             isIn: [Object.values(USER_ROLE)],
           },
+        },
+        password: {
+          type: DataTypes.STRING,
+          allowNull: false,
         },
       },
       {

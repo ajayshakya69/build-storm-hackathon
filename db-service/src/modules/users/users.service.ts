@@ -44,12 +44,8 @@ export class UserService {
     if (checkUser)
       throw new BadRequestException(ERROR_MESSAGES.USER_ALREADY_EXIST);
 
-    console.log('this is probem');
     try {
-      const res = await this.UserModel.create({
-        ...data,
-        id: data.supabase_id,
-      });
+      const res = await this.UserModel.create(data);
       return res;
     } catch (error: any) {
       console.log(error);

@@ -59,4 +59,10 @@ export class PrivateUsersController {
   ) {
     return await this.usersService.updateUserProfile(id, body);
   }
+
+  @Post('by-email')
+  @ApiProperty({ description: 'Get user by email (PRIVATE)' })
+  async getUserByEmail(@Body('email') email: string) {
+    return await this.usersService.getUserByEmail(email);
+  }
 }

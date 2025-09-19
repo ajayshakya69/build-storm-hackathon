@@ -1,7 +1,6 @@
 export enum USER_ROLE {
-  DEVELOPER = 'DEVELOPER',
-  PROJECT_MANAGER = 'PROJECT_MANAGER',
-  AUTHENTICATED = 'AUTHENTICATED',
+  CUSTOMER = 'CUSTOMER',
+  VENDOR = 'VENDOR',
 }
 
 export interface UserDetailsDto {

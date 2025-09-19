@@ -13,10 +13,14 @@ import {
 import { USER_ROLE } from 'src/core/constants/user.constants';
 import { InternalCallService } from './internal-call.service';
 import { HandleAxiosMetaError } from './internal-call.utils';
+import { UsersService } from 'src/modules/users/users.service';
 
 @Injectable()
 export class OpenGuard implements CanActivate {
-  constructor(private readonly internalCallService: InternalCallService) {}
+  constructor(
+    private readonly internalCallService: InternalCallService,
+    private readonly userService: UsersService,
+  ) {}
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
@@ -31,15 +35,11 @@ export class OpenGuard implements CanActivate {
     if (bearer !== 'Bearer' || !token) {
       throw new UnauthorizedException(INVALID_TOKEN_ERROR_MESSAGE);
     }
-    const sessionRes =
-      await this.internalCallService.authAxiosInstance.getSessionFromToken(
-        token,
-      );
-    const { user, session } = HandleAxiosMetaError(sessionRes);
+
+    const user = await this.userService.getUserFromToken(token);
 
     try {
       request.user = user;
-      request.session = session;
       return true;
       // if (user.role == USER_ROLE.AUTHENTICATED) return true;
 

@@ -10,6 +10,10 @@ export class DBAxiosInstance extends AxiosInstanceProvider {
     const res = await this.axiosInstance.get('/db/users/details?id=' + id);
     return res?.data;
   }
+  async getUserWithEmail(email: string) {
+    const res = await this.axiosInstance.post('/db/users/by-email', { email });
+    return res?.data;
+  }
 
   async createUser(data: CreateUserDto) {
     const res = await this.axiosInstance.post('/db/users', data);

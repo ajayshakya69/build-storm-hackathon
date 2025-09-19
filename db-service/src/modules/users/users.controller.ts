@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Query,
-  Body,
-  ParseUUIDPipe,
-  UseGuards,
-  NotFoundException,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Query, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { UserService } from './users.service';
 import {
@@ -17,9 +7,8 @@ import {
   CreateDevProfileDto,
   UpdateDevProfileDto,
   UserIdDto,
+  EmailDto,
 } from './users.dto';
-import { InternalCallGuard } from 'src/core/guards/guards';
-import { ERROR_MESSAGES } from './users.constant';
 
 @ApiTags('Users & Developers')
 @Controller('users')
@@ -70,5 +59,11 @@ export class UserController {
     @Query() query: UserIdDto,
   ) {
     return this.userService.updateDevProfile(body, query.user_id);
+  }
+
+  @Post('by-email')
+  @ApiOperation({ summary: 'Get user by email' })
+  async getUserByEmail(@Body() body: EmailDto) {
+    return this.userService.getUserByEmail(body.email);
   }
 }

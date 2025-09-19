@@ -18,6 +18,9 @@ async function bootstrap() {
     }),
   );
   app.useGlobalInterceptors(new LoggerInterceptor(loggerService));
+  app.enableCors({
+    origin: '*',
+  });
   const config = new DocumentBuilder()
     .setTitle('Auth service')
     .setDescription('The API description')

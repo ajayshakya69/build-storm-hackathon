@@ -1,6 +1,0 @@
-export enum TODO_STATUS {
-  PENDING = 'PENDING',
-  ACCEPTED = 'INPROGRESS',
-  DONE = 'DONE',
-  BACKLOGS = 'BACKLOGS',
-}

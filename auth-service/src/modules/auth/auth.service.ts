@@ -27,6 +27,7 @@ export class AuthService {
         email: data.email,
         name: data.name,
         password: hashedPassword,
+        role: data.role,
       },
     );
 
@@ -41,9 +42,7 @@ export class AuthService {
         data.email,
       );
 
-    HandleAxiosMetaError(userRes);
-
-    const user = userRes.data;
+    const user = HandleAxiosMetaError(userRes);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -54,11 +53,11 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const payload = { ...user, userId: user.id };
 
     const token = await this.jwtService.signAsync(payload);
 
-    return { access_token: token };
+    return { accessToken: token };
   }
 
   async changeRole(id: string, role: USER_ROLE) {

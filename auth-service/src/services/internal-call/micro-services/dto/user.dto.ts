@@ -8,16 +8,21 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty({
-    example: 'a7b5c92e-9a44-4b6c-8f83-1234567890ab',
-    description: 'Supabase auth user ID',
+    example: 'xxxxx',
+    description: 'password',
   })
-  @IsUUID()
+  @IsString()
   password: string;
 
   @ApiPropertyOptional({ example: 'John Doe' })
   @IsOptional()
   @IsString()
   name?: string;
+
+  @ApiPropertyOptional({ enum: USER_ROLE, example: USER_ROLE.CUSTOMER })
+  @IsOptional()
+  @IsEnum(USER_ROLE)
+  role: USER_ROLE;
 
   @ApiPropertyOptional({ example: 'https://cdn.example.com/avatar.png' })
   @IsOptional()

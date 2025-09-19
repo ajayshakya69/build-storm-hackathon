@@ -7,7 +7,6 @@ import { ReqResInterceptor } from 'src/core/interceptors/response-interceptor';
 import { UserModule } from 'src/modules/users/users.module';
 import { LoggerModule } from 'src/core/services/logger/logger.module';
 import { HttpExceptionFilter } from 'src/core/filters/http-exception.filter';
-import { OrganizationModule } from 'src/modules/organization/organization.module';
 import { ProductModule } from 'src/modules/products/product.module';
 
 @Module({
@@ -20,7 +19,6 @@ import { ProductModule } from 'src/modules/products/product.module';
     HealthCheckModule,
     // modules
     UserModule,
-    OrganizationModule,
     ProductModule,
   ],
   providers: [
