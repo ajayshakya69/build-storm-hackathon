@@ -19,7 +19,7 @@ async function bootstrap() {
   );
   app.useGlobalInterceptors(new LoggerInterceptor(loggerService));
   const config = new DocumentBuilder()
-    .setTitle('User service')
+    .setTitle('Product service')
     .setDescription('The API description')
     .setVersion('1.0')
     .addBearerAuth()

@@ -5,10 +5,17 @@ import {
   Post,
   Query,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiBearerAuth, ApiProperty } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiProperty,
+} from '@nestjs/swagger';
 import { AuthenticatedGuard } from './auth.guards';
 import { RequestDto } from 'src/core/dtos/request.dto';
 import {
@@ -16,6 +23,7 @@ import {
   SignInWithPasswordDto,
   SignUpWithPasswordDto,
 } from './auth.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -29,6 +37,25 @@ export class AuthController {
   @Post('sign-in')
   async signIn(@Body() body: SignInWithPasswordDto) {
     return await this.authService.signInWithPassword(body);
+  }
+
+  @Post('upload-file')
+  @UseInterceptors(FileInterceptor('image'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  async uploadFile(@UploadedFile() file: any) {
+    const data = await this.authService.uploadFile(file);
+    return data;
   }
 }
 

@@ -10,7 +10,9 @@ import {
   UpdateCategoryDto,
   CreateProductDto,
   UpdateProductDto,
+  ProductFilterQueryDto,
 } from './product.dto';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class ProductCategoryService {
@@ -86,5 +88,36 @@ export class ProductCategoryService {
     if (!product) throw new NotFoundException('Product not found');
     await product.destroy();
     return { message: 'Product deleted successfully' };
+  }
+
+  async filterProducts(dto: ProductFilterQueryDto) {
+    const where: any = {};
+    const categoryWhere: any = {};
+
+    if (dto.brand) where.brand = dto.brand;
+    if (dto.minPrice)
+      where.price = { ...(where.price || {}), [Op.gte]: dto.minPrice };
+    if (dto.maxPrice)
+      where.price = { ...(where.price || {}), [Op.lte]: dto.maxPrice };
+    if (dto.inStock !== undefined) where.inStock = dto.inStock;
+
+    if (dto.categories && dto.categories.length > 0) {
+      categoryWhere.name = { [Op.in]: dto.categories };
+    }
+
+    const products = await this.ProductModel.findAll({
+      where,
+      include: [
+        {
+          model: this.CategoryModel,
+          as: 'category',
+          where: categoryWhere,
+          required: Object.keys(categoryWhere).length > 0,
+        },
+      ],
+      order: dto.sortBy ? [[dto.sortBy, dto.sortOrder || 'ASC']] : undefined,
+    });
+
+    return products;
   }
 }

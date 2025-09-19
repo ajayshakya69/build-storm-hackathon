@@ -5,8 +5,8 @@ import { HealthCheckModule } from 'src/core/health-check/health.module';
 import { ReqResInterceptor } from 'src/core/interceptors/response-interceptor';
 import { LoggerModule } from 'src/core/services/logger/logger.module';
 import { HttpExceptionFilter } from 'src/core/filters/http-exception.filter';
-import { UsersModule } from 'src/modules/users/users.module';
 import { InternalCallModule } from 'src/services/internal-call/internal-call.module';
+import { ProductCategoryModule } from 'src/modules/product/product.module';
 
 @Module({
   imports: [
@@ -16,9 +16,7 @@ import { InternalCallModule } from 'src/services/internal-call/internal-call.mod
     LoggerModule,
     HealthCheckModule,
     InternalCallModule,
-
-    // modules
-    UsersModule,
+    ProductCategoryModule,
   ],
   providers: [
     {
