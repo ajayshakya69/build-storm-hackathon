@@ -103,7 +103,12 @@ export class ProductModel extends Model<
           allowNull: true,
         },
         images: {
-          type: DataTypes.ARRAY(DataTypes.STRING),
+          type: DataTypes.JSON,
+          allowNull: true,
+          defaultValue: [],
+        },
+        features: {
+          type: DataTypes.JSON,
           allowNull: true,
           defaultValue: [],
         },
@@ -119,11 +124,6 @@ export class ProductModel extends Model<
           type: DataTypes.TEXT,
           allowNull: true,
         },
-        features: {
-          type: DataTypes.ARRAY(DataTypes.STRING),
-          allowNull: true,
-          defaultValue: [],
-        },
         inStock: {
           type: DataTypes.BOOLEAN,
           allowNull: true,
@@ -136,10 +136,10 @@ export class ProductModel extends Model<
           type: DataTypes.UUID,
           allowNull: true,
         },
-        user_id: {
-          type: DataTypes.UUID,
-          allowNull: true,
-        },
+        // user_id: {
+        //   type: DataTypes.UUID,
+        //   allowNull: true,
+        // },
       },
       {
         sequelize,
@@ -157,9 +157,9 @@ export class ProductModel extends Model<
       foreignKey: 'category_id',
       as: 'category',
     });
-    ProductModel.belongsTo(models.UserModel, {
-      foreignKey: 'user_id',
-      as: 'vendor',
-    });
+    // ProductModel.belongsTo(models.UserModel, {
+    //   foreignKey: 'user_id',
+    //   as: 'vendor',
+    // });
   }
 }

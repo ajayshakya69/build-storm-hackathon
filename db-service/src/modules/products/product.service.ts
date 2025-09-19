@@ -54,6 +54,7 @@ export class ProductCategoryService {
   async createProduct(dto: CreateProductDto) {
     try {
       const res = await this.ProductModel.create(dto);
+      console.log({ res });
       return res;
     } catch (err: any) {
       console.log(err);

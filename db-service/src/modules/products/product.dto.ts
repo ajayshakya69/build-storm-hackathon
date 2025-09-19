@@ -11,42 +11,49 @@ import {
 /** -------------------- CATEGORY DTOs -------------------- **/
 
 export class CreateCategoryDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'Electronics' })
   @IsString()
   name!: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({
+    example:
+      'Devices and gadgets including smartphones, laptops, and accessories.',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   description?: string;
 }
 
 export class UpdateCategoryDto {
-  @ApiProperty({ required: false })
+  @ApiProperty({ example: 'Home Appliances', required: false })
   @IsOptional()
   @IsString()
   name?: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({
+    example: 'Appliances to make your home comfortable and efficient.',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   description?: string;
 }
 
 export class IdDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'c0a80123-4567-89ab-cdef-0123456789ab' })
   @IsUUID()
   id!: string;
 }
 
 export class CategoryIdDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'c0a80123-4567-89ab-cdef-0123456789ab' })
   @IsUUID()
   category_id!: string;
 }
 
 export class ProductIdDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'd0b80123-4567-89ab-cdef-0123456789ab' })
   @IsUUID()
   product_id!: string;
 }
@@ -54,114 +61,155 @@ export class ProductIdDto {
 /** -------------------- PRODUCT DTOs -------------------- **/
 
 export class CreateProductDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'iPhone 15' })
   @IsString()
   name!: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 999.99 })
   @IsNumber()
   price!: number;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ example: 1099.99, required: false })
   @IsOptional()
   @IsNumber()
   originalPrice?: number;
 
-  @ApiProperty({ type: [String], required: false })
+  @ApiProperty({
+    example: [
+      'https://example.com/images/iphone15-front.jpg',
+      'https://example.com/images/iphone15-back.jpg',
+    ],
+    type: [String],
+    required: false,
+  })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
   images?: string[];
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ example: 4.8, required: false })
   @IsOptional()
   @IsNumber()
   rating?: number;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ example: 1200, required: false })
   @IsOptional()
   @IsNumber()
   reviews?: number;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({
+    example: 'Latest Apple smartphone with advanced camera and performance.',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   description?: string;
 
-  @ApiProperty({ type: [String], required: false })
+  @ApiProperty({
+    example: ['5G', 'OLED Display', 'Face ID', 'Dual Camera'],
+    type: [String],
+    required: false,
+  })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
   features?: string[];
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ example: true, required: false })
   @IsOptional()
   @IsBoolean()
   inStock?: boolean;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ example: 'Apple', required: false })
   @IsOptional()
   @IsString()
   brand?: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'c0a80123-4567-89ab-cdef-0123456789ab' })
   @IsUUID()
   category_id!: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'u0b80123-4567-89ab-cdef-0123456789ab' })
   @IsUUID()
   user_id!: string;
 }
 
 export class UpdateProductDto {
+  @ApiProperty({ example: 'Samsung 4K TV', required: false })
   @IsOptional()
   @IsString()
   name?: string;
 
+  @ApiProperty({ example: 699.99, required: false })
   @IsOptional()
   @IsNumber()
   price?: number;
 
+  @ApiProperty({ example: 799.99, required: false })
   @IsOptional()
   @IsNumber()
   originalPrice?: number;
 
-  @ApiProperty({ type: [String], required: false })
+  @ApiProperty({
+    example: ['https://example.com/images/samsung-tv.jpg'],
+    type: [String],
+    required: false,
+  })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
   images?: string[];
 
+  @ApiProperty({ example: 4.5, required: false })
   @IsOptional()
   @IsNumber()
   rating?: number;
 
+  @ApiProperty({ example: 850, required: false })
   @IsOptional()
   @IsNumber()
   reviews?: number;
 
+  @ApiProperty({
+    example: 'Ultra HD Smart TV with vibrant colors and streaming apps.',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   description?: string;
 
-  @ApiProperty({ type: [String], required: false })
+  @ApiProperty({
+    example: ['4K', 'Smart TV', 'HDR', 'Wi-Fi'],
+    type: [String],
+    required: false,
+  })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
   features?: string[];
 
+  @ApiProperty({ example: true, required: false })
   @IsOptional()
   @IsBoolean()
   inStock?: boolean;
 
+  @ApiProperty({ example: 'Samsung', required: false })
   @IsOptional()
   @IsString()
   brand?: string;
 
+  @ApiProperty({
+    example: 'c0a80123-4567-89ab-cdef-0123456789ab',
+    required: false,
+  })
   @IsOptional()
   @IsUUID()
   category_id?: string;
 
+  @ApiProperty({
+    example: 'u1b80123-4567-89ab-cdef-0123456789ab',
+    required: false,
+  })
   @IsOptional()
   @IsUUID()
   user_id?: string;
