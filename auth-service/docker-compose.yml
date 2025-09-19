@@ -1,0 +1,14 @@
+services:
+  krivisio-db-service:
+    image: ajayshakya786/krivisio-auth-service:latest
+    ports:
+      - '3001:3000'
+    restart: unless-stopped
+    environment:
+      PORT: 3000
+      SUPABASE_URL: 'https://vyirgrhdmjpirqjqfahk.supabase.co'
+      SUPABASE_SERVICE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5aXJncmhkbWpwaXJxanFmYWhrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzgwNjY5NiwiZXhwIjoyMDY5MzgyNjk2fQ.uy_JT-TYwLPThar5L4LF05rr_OJXtFhGkptH1uct7EU'
+      SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5aXJncmhkbWpwaXJxanFmYWhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MDY2OTYsImV4cCI6MjA2OTM4MjY5Nn0.w9Zh3ATW6SN8GFRcdRVU0GobqS5tqzZywWs17vb5aH8'
+      X_SECRET: 'secret'
+      DB_SERVICE_API: http://20.193.156.147:3000
+      USER_SERVICE_API: http://20.193.156.147:3002
