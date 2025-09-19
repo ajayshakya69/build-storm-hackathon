@@ -11,6 +11,11 @@ export class UserAxiosInstance extends AxiosInstanceProvider {
     return res?.data;
   }
 
+  async getUserByEmail(email: string) {
+    const res = await this.axiosInstance.post('/_users/by-email', { email });
+    return res?.data;
+  }
+
   async createUser(data: CreateUserDto) {
     const res = await this.axiosInstance.post('/_users', data);
     return res?.data;

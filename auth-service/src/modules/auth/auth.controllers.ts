@@ -9,37 +9,26 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiBearerAuth, ApiProperty } from '@nestjs/swagger';
-import {
-  ChangeRoleDto,
-  GetSessionFromTokenDto,
-  SignUpWithPasswordDto,
-} from './auth.dto';
-import { SignInWithPasswordDto } from 'src/services/supabase/subabase.dto';
 import { AuthenticatedGuard } from './auth.guards';
 import { RequestDto } from 'src/core/dtos/request.dto';
+import {
+  GetSessionFromTokenDto,
+  SignInWithPasswordDto,
+  SignUpWithPasswordDto,
+} from './auth.dto';
 
 @Controller('auth')
-@ApiBearerAuth()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('sign-up')
-  @ApiProperty({ description: 'Sign up with email and password ( ALL )' })
   async signUp(@Body() body: SignUpWithPasswordDto) {
     return await this.authService.signUpWithPassword(body);
   }
 
   @Post('sign-in')
-  @ApiProperty({ description: 'Sign in with password ( ALL )' })
-  async signInWithPassword(@Body() body: SignInWithPasswordDto) {
-    return this.authService.signInWithPassword(body);
-  }
-
-  @Post('change-role')
-  @UseGuards(AuthenticatedGuard)
-  @ApiProperty({ description: 'Update user role ( AUTHENTICATED )' })
-  async changeRole(@Query() query: ChangeRoleDto, @Req() req: RequestDto) {
-    return await this.authService.changeRole(req.user.id, query.role);
+  async signIn(@Body() body: SignInWithPasswordDto) {
+    return await this.authService.signInWithPassword(body);
   }
 }
 
@@ -53,7 +42,7 @@ export class PrivateAuthController {
     description: 'Get session details with supabse id ( PRIVATE )',
   })
   async getSessionBySupabaseId(@Query('id') id: string) {
-    return await this.authService.getSessionBySupabaseId(id);
+    return await this.authService.getSessionFromToken(id);
   }
 
   @Post('details')

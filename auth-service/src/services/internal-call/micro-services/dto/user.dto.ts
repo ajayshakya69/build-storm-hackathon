@@ -12,7 +12,7 @@ export class CreateUserDto {
     description: 'Supabase auth user ID',
   })
   @IsUUID()
-  supabase_id: string;
+  password: string;
 
   @ApiPropertyOptional({ example: 'John Doe' })
   @IsOptional()
@@ -36,7 +36,7 @@ export class UpdateUserDto {
   @IsString()
   profile_picture?: string;
 
-  @ApiPropertyOptional({ enum: USER_ROLE, example: USER_ROLE.DEVELOPER })
+  @ApiPropertyOptional({ enum: USER_ROLE, example: USER_ROLE.CUSTOMER })
   @IsOptional()
   @IsEnum(USER_ROLE)
   role?: USER_ROLE;

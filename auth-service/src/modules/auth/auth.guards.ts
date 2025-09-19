@@ -37,7 +37,7 @@ export class AuthenticatedGuard implements CanActivate {
       request.user = user;
       request.session = session;
 
-      if (user.role == USER_ROLE.AUTHENTICATED) return true;
+      if (user.role == USER_ROLE.CUSTOMER) return true;
       else throw new UnauthorizedException('Unauthorized');
     } catch (error) {
       throw new UnauthorizedException(EXPIRED_TOKEN_ERROR_MESSAGE);

@@ -4,6 +4,10 @@ import {
   OrganizationModel,
 } from 'src/modules/organization/organization.schema';
 import {
+  CategoryModel,
+  ProductModel,
+} from 'src/modules/products/product.schema';
+import {
   ProjectMemberModel,
   ProjectModel,
   TaskModel,
@@ -23,4 +27,6 @@ export const SQL_MODELS = {
   OrganizationModel: OrganizationModel.setup,
   OrganizationInvitationModel: OrganizationInvitationModel.setup,
   OrganizationMembersModel: OrganizationMembersModel.setup,
+  CategoryModel: CategoryModel.setup,
+  ProductModel: ProductModel.setup,
 };

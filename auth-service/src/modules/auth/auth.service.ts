@@ -1,63 +1,82 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 import { InternalCallService } from 'src/services/internal-call/internal-call.service';
 import { HandleAxiosMetaError } from 'src/services/internal-call/internal-call.utils';
 import { HTTP_RESPONSE_CODES } from 'src/core/constants/http.constants';
-import { SupabaseService } from 'src/services/supabase/supabase.service';
 import { SignUpWithPasswordDto } from './auth.dto';
-import { SignInWithPasswordDto } from 'src/services/supabase/subabase.dto';
+import { SignInWithPasswordDto } from 'src/services/supabase/subabase.dto'; // you can move this into auth.dto
 import { USER_ROLE } from 'src/core/constants/user.constants';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly internalCallService: InternalCallService,
-    private readonly supabaseService: SupabaseService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async signUpWithPassword(data: SignUpWithPasswordDto) {
-    const { data: supaUser, error } =
-      await this.supabaseService.createUser(data);
+    const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    console.log('supabase ajay', error, data);
-    if (error) {
-      throw new BadRequestException(
-        error.message ?? HTTP_RESPONSE_CODES.INTERNAL_SERVER_ERROR.MESSAGE,
-      );
-    }
-
-    console.log('database ajay', error);
     const userRes = await this.internalCallService.userAxiosInstance.createUser(
       {
-        email: supaUser.user.email!,
-        name: supaUser.user.user_metadata?.name,
-        supabase_id: supaUser.user.id,
+        email: data.email,
+        name: data.name,
+        password: hashedPassword,
       },
     );
 
-    if (!userRes?.meta?.success)
-      await this.supabaseService.deleteUser(supaUser.user.id);
-
     HandleAxiosMetaError(userRes);
 
-    return 'Signed up successsfully';
+    return { message: 'Signed up successfully' };
   }
 
   async signInWithPassword(data: SignInWithPasswordDto) {
-    return this.supabaseService.signInWithPassword(data);
+    const userRes =
+      await this.internalCallService.userAxiosInstance.getUserByEmail(
+        data.email,
+      );
+
+    HandleAxiosMetaError(userRes);
+
+    const user = userRes.data;
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const isPasswordValid = await bcrypt.compare(data.password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const payload = { sub: user.id, email: user.email, role: user.role };
+
+    const token = await this.jwtService.signAsync(payload);
+
+    return { access_token: token };
   }
 
   async changeRole(id: string, role: USER_ROLE) {
     const userRes = await this.internalCallService.userAxiosInstance.updateUser(
       id,
-      { role },
+      {
+        role,
+      },
     );
     return HandleAxiosMetaError(userRes);
   }
 
-  async getSessionBySupabaseId(id: string) {
-    return this.supabaseService.getUserById(id);
-  }
   async getSessionFromToken(token: string) {
-    return this.supabaseService.getUserFromToken(token);
+    try {
+      const payload = await this.jwtService.verifyAsync(token);
+      return payload;
+    } catch (err) {
+      throw new UnauthorizedException('Invalid or expired token');
+    }
   }
 }
