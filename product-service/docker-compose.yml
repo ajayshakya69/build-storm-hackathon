@@ -1,0 +1,10 @@
+services:
+  user-service:
+    image: ajayshakya786/krivisio-user-service:latest
+    environment:
+      PORT: 3000
+      X_SECRET: 'secret'
+      DB_SERVICE_API: http://20.193.156.147:3000
+      AUTH_SERVICE_API: http://20.193.156.147:3001
+    ports:
+      - '3002:3002'
