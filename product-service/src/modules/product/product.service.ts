@@ -19,27 +19,22 @@ export class ProductCategoryService {
 
   async createProduct(data: CreateProductDto) {
     const res = await this.internalCallService.dbInstance.createProduct(data);
-
     HandleAxiosMetaError(res);
-
     return 'Product created successfully';
   }
 
   async getCategories() {
     const res = await this.internalCallService.dbInstance.getAllCategory();
-    HandleAxiosMetaError(res);
-    return res;
+    return HandleAxiosMetaError(res);
   }
 
   async getAllProject() {
     const res = await this.internalCallService.dbInstance.getAllProducts();
-    HandleAxiosMetaError(res);
-    return res;
+    return HandleAxiosMetaError(res);
   }
 
   async filterProducts(query: ProductFilterQueryDto) {
     const res = await this.internalCallService.dbInstance.filterProducts(query);
-    HandleAxiosMetaError(res);
-    return res;
+    return HandleAxiosMetaError(res);
   }
 }

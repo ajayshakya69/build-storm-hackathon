@@ -30,7 +30,7 @@ export class ProductCategoryService {
   }
 
   async getCategories() {
-    return await this.CategoryModel.findAll();
+    return await this.CategoryModel.findAll({ order: [['name', 'ASC']] });
   }
 
   async getCategoryById(id: string) {
@@ -66,6 +66,7 @@ export class ProductCategoryService {
   async getProducts() {
     return await this.ProductModel.findAll({
       include: [{ model: this.CategoryModel, as: 'category' }],
+      order: [['name', 'ASC']],
     });
   }
 
